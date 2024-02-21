@@ -1,5 +1,4 @@
 *.joblib
 *.ipynb
 *.jpg
-*.h5
 __pycache__/
