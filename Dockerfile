@@ -15,12 +15,3 @@ COPY ./code /code/app
 
 # 
 CMD ["python", "app/main.py"]
-
-#
-ENV http_proxy=http:...
-#
-ENV https_proxy=http:...
-#
-RUN sudo apt-get install libav-tools
-#
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
