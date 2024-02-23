@@ -1,8 +1,8 @@
 import os
-import cv2
 import json
 import tensorflow as tf
 import tensorflow_hub as hub
+import numpy as np
 
 class ClassificationModel:
     model = None
@@ -25,15 +25,10 @@ class ClassificationModel:
         with open(path) as f:
             class_label = json.load(f)
         self.model = model
-        self.targets = class_label    
-
-    def load_image(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)    
+        self.targets = class_label  
     
-    def predict(self, image) -> list:
-        image_resized = self.load_image(image)
-        im = image_resized.copy()       
+    def predict(self, image, n) -> list:
+        im = tf.constant(image[:, :, :3])      
         if im.ndim == 3:
             im = tf.expand_dims(im, axis = 0)
         elif im.ndim == 4:
@@ -44,6 +39,11 @@ class ClassificationModel:
         else:
             with tf.device(tf.test.gpu_device_name()):
                 pred = self.model.predict(im, verbose = 0)
-        label = [self.targets[str(pred[i].argmax())] for i in range(len(pred))]
-        return label
+        
+        dtype = [('class_index', int), ('prob', float)]
+        value = [(int(i), pred[0][i]) for i in range(len(pred[0]))]
+        results = np.array(value, dtype=dtype)
+        results = np.sort(results, order='prob')[::-1]
+        #label = [self.targets[str(pred[i].argmax())] for i in range(len(pred))]
+        return {self.targets[str(result[0])]: result[1] for result in results[:n]}
 
