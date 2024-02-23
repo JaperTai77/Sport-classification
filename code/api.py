@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, File, UploadFile
 import contextlib
 from model import ClassificationModel
+from AzureAPI import CaptionModel
 import numpy as np
 from PIL import Image
 import io
@@ -29,3 +30,10 @@ async def post_image_classification(image: UploadFile=File(...), numberofpred: i
     loaded_image = np.float32(loaded_image/255)
     labels = model.predict(loaded_image, n=numberofpred)
     return {f'Prediction on image {i+1}': label for i,label in enumerate(labels)}
+
+@app.post("image_caption")
+async def post_image_caption(image: UploadFile=File(...)) -> dict:
+    contents = await image.read()
+    #loaded_image = Image.open(io.BytesIO(contents))
+    message = CaptionModel(contents)
+    return message
