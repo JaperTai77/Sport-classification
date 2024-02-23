@@ -31,9 +31,8 @@ async def post_image_classification(image: UploadFile=File(...), numberofpred: i
     labels = model.predict(loaded_image, n=numberofpred)
     return {f'Prediction on image {i+1}': label for i,label in enumerate(labels)}
 
-@app.post("image_caption")
+@app.post("/image_caption")
 async def post_image_caption(image: UploadFile=File(...)) -> dict:
-    contents = await image.read()
-    #loaded_image = Image.open(io.BytesIO(contents))
+    contents = image.filename
     message = CaptionModel(contents)
     return message
