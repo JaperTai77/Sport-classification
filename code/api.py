@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     model.load_model()
     yield
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title='Sport Classification',lifespan=lifespan)
 
 @app.get("/")
 async def home():
