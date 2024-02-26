@@ -1,5 +1,5 @@
 *.joblib
-*.ipynb
+temp*.ipynb
 *.jpg
 __pycache__/
 config.yaml
