@@ -17,11 +17,11 @@ class ClassificationModel:
         '''
         path = os.path.join(
             os.getcwd(),
-            'sportsEN_V2_0219_2.h5')
+            'code/sportsEN_V2_0219_2.h5')
         model = tf.keras.models.load_model(path, custom_objects={'KerasLayer':hub.KerasLayer})
         path = os.path.join(
             os.getcwd(),
-            'class_label.json')
+            'code/class_label.json')
         with open(path) as f:
             class_label = json.load(f)
         self.model = model
