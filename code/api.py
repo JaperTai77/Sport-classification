@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     model.load_model()
     yield
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title='Sport Classification',lifespan=lifespan)
 
 @app.get("/")
 async def home():
@@ -29,10 +29,11 @@ async def post_image_classification(image: UploadFile=File(...), numberofpred: i
     loaded_image = np.array(loaded_image.resize((224,224)))
     loaded_image = np.float32(loaded_image/255)
     labels = model.predict(loaded_image, n=numberofpred)
-    return {f'Prediction on image {i+1}': label for i,label in enumerate(labels)}
+    return {f'Prediction {i+1}': {'label':label, 'prob':labels[label]} for i,label in enumerate(labels)}
 
 @app.post("/image_caption")
 async def post_image_caption(image: UploadFile=File(...)) -> dict:
-    contents = image.filename
+    contents = await image.read()
+    #contents = image.filename
     message = CaptionModel(contents)
     return message
