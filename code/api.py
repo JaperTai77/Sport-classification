@@ -24,7 +24,7 @@ async def post_image_classification(image: UploadFile=File(...), numberofpred: i
     # openCV
     #im = image.file.read()
     #loaded_image = cv2.imdecode(np.fromstring(im, np.uint8), cv2.IMREAD_COLOR)
-    contents = image.read()
+    contents = await image.read()
     loaded_image = Image.open(io.BytesIO(contents))
     loaded_image = np.array(loaded_image.resize((224,224)))
     loaded_image = np.float32(loaded_image/255)
