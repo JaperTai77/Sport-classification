@@ -34,6 +34,7 @@ async def post_image_classification(image: UploadFile=File(...), numberofpred: i
 @app.post("/image_caption")
 async def post_image_caption(image: UploadFile=File(...)) -> dict:
     contents = await image.read()
+    loaded_image = io.BytesIO(contents)
     #contents = image.filename
-    message = CaptionModel(contents)
+    message = CaptionModel(loaded_image)
     return message
