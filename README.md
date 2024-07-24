@@ -20,3 +20,4 @@ This app is run using FastAPI with uvicorn and is written in main.py. Can call t
 ```
 python code/main.py
 ```
+Sample image can be found in repo. temp.png & temp2.png
