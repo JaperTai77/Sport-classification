@@ -3,15 +3,17 @@ from azure.ai.vision.imageanalysis import ImageAnalysisClient
 from azure.ai.vision.imageanalysis.models import VisualFeatures
 from azure.core.credentials import AzureKeyCredential
 from PIL import Image
+from config import get_endpoint_key
+
+endpoint, key = get_endpoint_key()
 
 def CaptionModel(
     image_file = None,
-    endpoint = "https://computervision94327716.cognitiveservices.azure.com/",
-    key = "c70e45249a274082b54f1dee53b94cbc"
+    endpoint = endpoint,
+    key = key
 ):
     if image_file is None:
         return {"Caption": "no image"}
-    
     client = ImageAnalysisClient(
         endpoint=endpoint,
         credential=AzureKeyCredential(key)
